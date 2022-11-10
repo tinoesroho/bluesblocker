@@ -15,11 +15,11 @@ export interface Settings {
 }
 
 export const settingsDefaults: Settings = {
-	action: 'block',
+	action: 'mute',
 	replaceUrl: clown,
 	actionOnFollowingAccounts: false,
 	followedOtto: false,
-	actionOnFollowedByAccounts: true,
+	actionOnFollowedByAccounts: false,
 	actionOnVerifiedAccounts: true,
 	whitelistedUsers: [],
 	actionQueue: [],
