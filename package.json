@@ -1,5 +1,5 @@
 {
-  "name": "noft",
+  "name": "bluesBlocker",
   "version": "1.0.2",
   "private": true,
   "description": "Chrome extension to auto-block Twitter Blue subscribers on Twitter",
