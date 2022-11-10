@@ -129,7 +129,7 @@ function recursivelyDetectNFTs(
 	for (const key of Object.keys(json)) {
 		const value = json[key];
 		if (!value) continue;
-		if (value.id_str && value.ext_has_nft_avatar) {
+		if (value.id_str && value.ext_is_blue_verified) {
 			const res = callback({
 				id: value.id_str,
 				name: value.screen_name,
