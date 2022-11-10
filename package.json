@@ -2,13 +2,13 @@
   "name": "noft",
   "version": "1.0.2",
   "private": true,
-  "description": "Chrome extension to auto-block NFT profile pictures on Twitter",
+  "description": "Chrome extension to auto-block Twitter Blue subscribers on Twitter",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ottomated/noft.git"
+    "url": "git+https://github.com/tinoesroho/bluesblocker.git"
   },
   "license": "MIT",
-  "author": "Ottomated <otto@ottomated.pw>",
+  "author": "tinoesroho <tinoesroho@gmail.com>",
   "scripts": {
     "dev": "rollup -c -w",
     "release": "cross-env NODE_ENV=production rollup -c",
