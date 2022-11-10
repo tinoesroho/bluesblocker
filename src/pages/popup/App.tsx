@@ -64,7 +64,7 @@ const App = ({
 			</div>
 			<div className="row">
 				<img src="/assets/icon128.png" width={48} height={48} />
-				<h1>NoFT Options</h1>
+				<h1>BluesBlocker Options</h1>
 			</div>
 			{!settings.followedOtto && (
 				<button className="follow-btn" onClick={handleFollow}>
@@ -92,7 +92,7 @@ const App = ({
 				</label>
 			</div>
 			<p className="help-text">
-				NoFT doesn't block accounts immediately - it schedules them to be
+				BluesBlocker doesn't block accounts immediately - it schedules them to be
 				blocked in the background to avoid Twitter's bot detection.
 			</p>
 			<div className="row">
@@ -132,7 +132,7 @@ const App = ({
 				<>
 					<h3>Whitelisted Users</h3>
 					<p className="help-text">
-						Users are whitelisted when you press "UNDO" in the NoFT popup.
+						Users are whitelisted when you press "UNDO" in the BluesBlocker popup.
 					</p>
 					<div className="whitelist">
 						{settings.whitelistedUsers.map((user) => (
