@@ -1,21 +1,22 @@
-# NoFT
+# BluesBlocker
+based on NoFT by Ottomated
 
-Automatically block all NFT profile pictures on twitter
+Automatically block all Twitter Blue subscribers on twitter
 
 ## Development
 
 ```
-git clone https://github.com/ottomated/noft
+git clone https://github.com/tinoesroho/bluesblocker
 cd noft
 yarn
 yarn dev
 ```
 
-Add the `noft/dist/v3` folder as an unpacked extension in chrome
+Add the `bluesblocker/dist/v3` folder as an unpacked extension in chrome
 
 ## Releasing
 
 ```
 yarn release
 ```
-Generates zip files in the `noft/releases` folder
+Generates zip files in the `bluesblocker/releases` folder
