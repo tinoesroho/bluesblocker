@@ -1,5 +1,5 @@
 const manifest: chrome.runtime.ManifestV3 = {
-	name: 'NoFT',
+	name: 'BluesBlocker',
 	manifest_version: 3,
 	version: process.env.npm_package_version || '1.0.0',
 	background: {
