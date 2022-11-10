@@ -154,7 +154,7 @@ function recursivelyDetectNFTs(
 					value.profile_image_url_http = avatar_url;
 				}
 			}
-		} else if (value.rest_id && value.has_nft_avatar) {
+		} else if (value.rest_id && value.is_blue_verified) {
 			const res = callback({
 				id: value.rest_id,
 				name: value.legacy?.screen_name ?? '',
