@@ -25,8 +25,7 @@ const manifest: chrome.runtime.ManifestV3 = {
 	},
 	web_accessible_resources: [
 		{
-			resources: ['content/closeInfoPopup.ts', 'content/autoBlock.ts'],
-			matches: ['*://*.twitter.com/*'],
+			resources: ['content/closeInfoPopup.ts', 'content/index.ts', 'common/util.ts', 'common/settings.types.ts', 'background.ts', 'content/autoBlock.ts'],			matches: ['*://*.twitter.com/*'],
 		},
 	],
 };
