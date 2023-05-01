@@ -12,7 +12,7 @@ function injectScript(url: string): void {
 injectScript('content/closeInfoPopup.js');
 injectScript('content/autoBlock.js');
 
-chrome.storage.sync.get((initialSettings) => {
+chrome.storage.local.get((initialSettings) => {
 	const settings: Settings = { ...settingsDefaults, ...initialSettings };
 
 	window.addEventListener('message', (ev) => {
@@ -43,7 +43,7 @@ chrome.storage.sync.get((initialSettings) => {
 	});
 
 	chrome.storage.onChanged.addListener(async (changes, area) => {
-		if (area !== 'sync') return;
+		if (area !== 'local') return;
 		for (const [key, { newValue }] of Object.entries(changes)) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(settings as any)[key] = newValue;
@@ -53,3 +53,17 @@ chrome.storage.sync.get((initialSettings) => {
 		});
 	});
 });
+
+/*
+function exportWhitelist(){
+chrome.storage.local.get(['whitelistedUsers'], function(result) {
+  var textToSave = JSON.stringify(result.whitelistedUsers);
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(textToSave);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = 'whitelistedUsers.txt';
+  hiddenElement.click();
+});
+}
+*/
+// document.getElementById("saveWhitelist").addEventListener("click", exportWhitelist);

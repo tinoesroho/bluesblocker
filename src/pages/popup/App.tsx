@@ -11,8 +11,8 @@ const App = ({
 
 	useEffect(() => {
 		chrome.storage.onChanged.addListener(async (_, area) => {
-			if (area !== 'sync') return;
-			chrome.storage.sync.get((settings) =>
+			if (area !== 'local') return;
+			chrome.storage.local.get((settings) =>
 				setSettings({ ...settingsDefaults, ...settings } as Settings)
 			);
 		});
@@ -22,11 +22,11 @@ const App = ({
 		setting: T,
 		value: Settings[T]
 	) => {
-		chrome.storage.sync.set({ [setting]: value });
+		chrome.storage.local.set({ [setting]: value });
 	};
 
 	const removeWhitelist = (id: string) => {
-		chrome.storage.sync.set({
+		chrome.storage.local.set({
 			whitelistedUsers: settings.whitelistedUsers.filter((u) => u.id !== id),
 		});
 	};
@@ -55,7 +55,78 @@ const App = ({
 			'prepend'
 		);
 	};
+	
+	const exportWhitelist = () => {
+chrome.storage.local.get(['whitelistedUsers'], function(result) {
+  var textToSave = JSON.stringify(result.whitelistedUsers);
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(textToSave);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = 'whitelistedUsers.txt';
+  hiddenElement.click();
+});
+};
 
+const exportTestFile = () => {
+chrome.storage.local.get(['testImport'], function(result) {
+  var textToSave = JSON.stringify(result.testImport);
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(textToSave);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = 'testExport.txt';
+  hiddenElement.click();
+});
+};
+
+const dofileRequiredFunctionality  = () => {
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = _ => {
+    // you can use this method to get file and perform respective operations
+    const file = input.files[0];
+	saveFileToLocalStorage(file);
+
+	console.log(file);
+        };
+  input.click();
+  
+};
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsText(file);
+  });
+}
+
+/*
+async function saveFileToLocalStorage(file) {
+  const fileContent = await readFile(file);
+  const parsedImport = JSON.parse(fileContent);
+  chrome.storage.local.set({ 'whitelistedUsers': parsedImport }, () => {
+    console.log('Value is set to ' + fileContent);
+  });
+}
+*/
+async function saveFileToLocalStorage(file) {
+  const fileContent = await readFile(file);
+  const parsedImport = JSON.parse(fileContent);
+
+  chrome.storage.local.get(['whitelistedUsers'], (result) => {
+    const currentWhitelistedUsers = result.whitelistedUsers || [];
+
+    // Append the contents of the file to 'whitelistedUsers'
+    const newWhitelistedUsers = [...currentWhitelistedUsers, ...parsedImport];
+    chrome.storage.local.set({ whitelistedUsers: newWhitelistedUsers }, () => {
+      console.log('File contents appended to whitelistedUsers');
+    });
+  });
+}
+
+const resetQueueSettingsWhitelistGo = () => {
+chrome.storage.local.clear();
+};
 	return (
 		<div>
 			<div className="totals">
@@ -64,13 +135,14 @@ const App = ({
 			</div>
 			<div className="row">
 				<img src="/assets/icon128.png" width={48} height={48} />
-				<h1>NoFT Options</h1>
+				<h1>BluesBlocker Options</h1>
 			</div>
 			{!settings.followedOtto && (
 				<button className="follow-btn" onClick={handleFollow}>
 					Follow @Ottomated_
 				</button>
 			)}
+								<button id="saveWhitelist" onClick={exportWhitelist}>save whitelist</button> <button id="importReplacementWhitelist" onClick={dofileRequiredFunctionality}>load whitelist</button><button id="resetQueueSettingsWhitelist" onClick={resetQueueSettingsWhitelistGo}>clear everything</button>
 			<div className="row">
 				<select
 					id="action"
@@ -92,7 +164,7 @@ const App = ({
 				</label>
 			</div>
 			<p className="help-text">
-				NoFT doesn't block accounts immediately - it schedules them to be
+				BluesBlocker doesn't block accounts immediately - it schedules them to be
 				blocked in the background to avoid Twitter's bot detection.
 			</p>
 			<div className="row">
@@ -132,7 +204,7 @@ const App = ({
 				<>
 					<h3>Whitelisted Users</h3>
 					<p className="help-text">
-						Users are whitelisted when you press "UNDO" in the NoFT popup.
+						Users are whitelisted when you press "UNDO" in the BluesBlocker popup.
 					</p>
 					<div className="whitelist">
 						{settings.whitelistedUsers.map((user) => (

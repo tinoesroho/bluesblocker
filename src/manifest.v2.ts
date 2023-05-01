@@ -29,12 +29,6 @@ const manifest: chrome.runtime.ManifestV2 = {
 		'content/closeInfoPopup.ts',
 		'content/autoBlock.ts',
 	],
-	browser_specific_settings: {
-		gecko: {
-			id: 'noft@ottomated.net',
-			strict_min_version: '89.0',
-		},
-	},
 };
 
 export default manifest;

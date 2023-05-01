@@ -19,11 +19,11 @@ export async function addItemToList<
 	});
 
 	return new Promise<void>((resolve) => {
-		chrome.storage.sync.get(key, (settings) => {
+		chrome.storage.local.get(key, (settings) => {
 			const list = (settings[key] as typeof item[]) ?? [];
 			if (position === 'append') list.push(item);
 			else list.unshift(item);
-			chrome.storage.sync.set(
+			chrome.storage.local.set(
 				{
 					[key]: list,
 				},

@@ -1,3 +1,4 @@
+/*
 const observer = new MutationObserver((mutations, observer) => {
 	for (const mutation of mutations) {
 		if (mutation.type !== 'childList') continue;
@@ -25,3 +26,4 @@ observer.observe(window.document.body, {
 // ).singleNodeValue;
 
 // console.log(popup);
+*/

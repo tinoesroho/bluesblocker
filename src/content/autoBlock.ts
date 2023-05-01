@@ -59,7 +59,7 @@ function onNFTDetected(user: User): CallbackRes {
 		theme: 'dark',
 		drag: false,
 		position: 'bottomLeft',
-		timeout: 5000,
+		timeout: 50000,
 		buttons: [
 			[
 				'<button>UNDO</button>',

@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Settings, settingsDefaults } from '../../common/settings.types';
 import App from './App';
 
-chrome.storage.sync.get((settings) => {
+chrome.storage.local.get((settings) => {
 	const root = document.querySelector('#root');
 
 	render(
