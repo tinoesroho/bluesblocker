@@ -5,6 +5,7 @@ export interface Settings {
 	actionOnFollowingAccounts: boolean;
 	actionOnFollowedByAccounts: boolean;
 	actionOnVerifiedAccounts: boolean;
+	slowYourRoll: number;
 	followedOtto: boolean;
 	whitelistedUsers: { id: string; name: string }[];
 	actionQueue: {
@@ -15,8 +16,9 @@ export interface Settings {
 }
 
 export const settingsDefaults: Settings = {
-	action: 'mute',
+	action: 'block',
 	replaceUrl: clown,
+	slowYourRoll: 10,
 	actionOnFollowingAccounts: false,
 	followedOtto: false,
 	actionOnFollowedByAccounts: false,

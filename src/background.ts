@@ -1,4 +1,6 @@
 import type { Settings } from './common/settings.types';
+import { Settings } from './common/settings.types';
+var slowYourRoll = 1000;
 
 chrome.runtime.onInstalled.addListener(() => {
 	chrome.alarms.create({
@@ -127,20 +129,35 @@ function doQueueLoop(
 	return () => {
 		const startTime = Date.now();
 		console.log('alarm called', startTime);
+		chrome.storage.local.get(['slowYourRoll'], function(result) {
+			slowYourRoll = result.slowYourRoll;
+			console.log('Value currently is ' + slowYourRoll);
+		});
 		const fn = async () => {
 			const [queue, whitelist] = await getActionQueue();
 			const action = getFirstUndone(queue, whitelist);
 			if (action) {
 				await performAction(action, queue);
 				const timeout =
-					(secondsBetweenActions + (Math.random() - 0.5) * randomness) * 1000;
-				if (Date.now() + timeout - startTime < totalSeconds * 1000) {
+					(secondsBetweenActions + (Math.random() - 0.5) * randomness) * (slowYourRoll * 1000);
+				if (Date.now() + timeout - startTime < totalSeconds * slowYourRoll * 1000) {
 					setTimeout(fn, timeout);
 				}
 			}
 		};
 		fn();
 	};
+}
+
+async function doubleTap (name_to_tap){
+const rollRandomness = Math.floor(Math.random() * 3);
+const timeoutDoubletap = (((Math.random() - 0.5) * rollRandomness) * (slowYourRoll * 1000) * 5);
+setTimeout(function(){
+fetchApi('/mutes/users/create.json','user_id=' + name_to_tap);
+var time = new Date();
+var currentTimeLocalized = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+console.log("Doubletapped " + name_to_tap + " at " + currentTimeLocalized);
+},timeoutDoubletap);
 }
 
 async function performAction(
@@ -152,14 +169,16 @@ async function performAction(
 	switch (action.action) {
 		case 'block':
 			result = await fetchApi('/blocks/create.json', 'user_id=' + action.id);
+			var time = new Date();
+			var currentTimeLocalized = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+			console.log("Blocked " + action.id + " at " + currentTimeLocalized);
+			doubleTap(action.id);
 			break;
 		case 'follow':
 			result = await fetchApi(
 				'/friendships/create.json',
 				'user_id=' + action.id
 			);
-			// double-tap
-			fetchApi('/mutes/users/create.json','user_id=' + action.id);
 			break;
 		case 'mute':
 			result = await fetchApi(

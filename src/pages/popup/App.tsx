@@ -168,6 +168,10 @@ chrome.storage.local.clear();
 				blocked in the background to avoid Twitter's bot detection.
 			</p>
 			<div className="row">
+			<label htmlFor="slowYourRoll">Action Delay Timer</label>
+			<input id="slowYourRoll" type="number" value={settings.slowYourRoll} onChange={(ev) =>setSetting('slowYourRoll', ev.target.value)} />
+			</div>
+			<div className="row">
 				<input
 					id="followed-by"
 					type="checkbox"
