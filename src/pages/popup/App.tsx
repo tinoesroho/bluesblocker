@@ -138,9 +138,7 @@ chrome.storage.local.clear();
 				<h1>BluesBlocker Options</h1>
 			</div>
 			{!settings.followedOtto && (
-				<button className="follow-btn" onClick={handleFollow}>
-					Follow @Ottomated_
-				</button>
+			<p>based on NFT by <a href="https://twitter.com/Ottomated">Ottomated</a></p>
 			)}
 								<button id="saveWhitelist" onClick={exportWhitelist}>save whitelist</button> <button id="importReplacementWhitelist" onClick={dofileRequiredFunctionality}>load whitelist</button><button id="resetQueueSettingsWhitelist" onClick={resetQueueSettingsWhitelistGo}>clear everything</button>
 			<div className="row">
@@ -203,6 +201,28 @@ chrome.storage.local.clear();
 					}
 				/>
 				<label htmlFor="following">{action} verified accounts</label>
+			</div>
+			<div className="row">
+				<input
+					id="blockBigAccounts"
+					type="checkbox"
+					checked={settings.blockBigAccounts}
+					onChange={(ev) =>
+						setSetting('blockBigAccounts', ev.target.checked)
+					}
+				/>
+				<label htmlFor="following">{action} big accounts</label>
+			</div>
+			<div className="row">
+				<input
+					id="silenceAlerts"
+					type="checkbox"
+					checked={settings.silenceAlerts}
+					onChange={(ev) =>
+						setSetting('silenceAlerts', ev.target.checked)
+					}
+				/>
+				<label htmlFor="silenceAlerts">Silence {action} Alerts</label>
 			</div>
 			{settings.whitelistedUsers.length > 0 && (
 				<>

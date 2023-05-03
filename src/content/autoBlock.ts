@@ -25,9 +25,10 @@ function onNFTDetected(user: User): CallbackRes {
 	// Cancel if already blocked
 	if (user.alreadyBlocked || user.alreadyMuted) return;
 	// Check settings
-	if (user.verified && !settings.actionOnVerifiedAccounts) return;
+	if (user.verified && !settings.actionOnVerifiedAccounts) return; 
 	if (user.following && !settings.actionOnFollowingAccounts) return;
 	if (user.followed_by && !settings.actionOnFollowedByAccounts) return;
+	if (user.followers > 1000000 && !settings.blockBigAccounts) return;
 	// Check open popups
 	if (openPopups.has(user.id))
 		return [
@@ -50,6 +51,22 @@ function onNFTDetected(user: User): CallbackRes {
 			queuedAction.action === 'mute' || undefined,
 			undefined,
 		];
+	if (settings.silenceAlerts){
+	window.postMessage({
+				noftRequest: 'doAction',
+				data: {
+					id: user.id,
+					action: settings?.action,
+				},
+	});
+
+	return [
+			queuedAction.action === 'block' || undefined,
+			queuedAction.action === 'mute' || undefined,
+			undefined,
+		];
+	}
+	if (!settings.silenceAlerts){
 	openPopups.add(user.id);
 	iziToast.show({
 		title: `${settings.action === 'block' ? 'Blocked' : 'Muted'} ${user.name}`,
@@ -88,6 +105,7 @@ function onNFTDetected(user: User): CallbackRes {
 			});
 		},
 	});
+	}
 	return [
 		settings.action === 'block' || undefined,
 		settings.action === 'mute' || undefined,
@@ -109,11 +127,10 @@ function processRequest(text: string): string {
 interface User {
 	id: string;
 	name: string;
-
 	following: boolean;
 	followed_by: boolean;
 	verified: boolean;
-
+	followers: number;
 	alreadyMuted: boolean;
 	alreadyBlocked: boolean;
 }
@@ -133,11 +150,10 @@ function recursivelyDetectNFTs(
 			const res = callback({
 				id: value.id_str,
 				name: value.screen_name,
-
 				verified: value.verified ?? false,
 				followed_by: value.followed_by ?? false,
 				following: value.following ?? false,
-
+				followers: value.followers_count,
 				alreadyBlocked: value.blocking ?? false,
 				alreadyMuted: value.muting ?? false,
 			});
@@ -158,7 +174,7 @@ function recursivelyDetectNFTs(
 			const res = callback({
 				id: value.rest_id,
 				name: value.legacy?.screen_name ?? '',
-
+				followers: value.followers_count,
 				verified: value.legacy?.verified ?? false,
 				followed_by: value.legacy?.followed_by ?? false,
 				following: value.legacy?.following ?? false,
